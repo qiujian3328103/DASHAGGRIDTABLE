@@ -1,0 +1,66 @@
+/* styles.css */
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+html, body, #root, .dash-container {
+    height: 100%;
+}
+
+.ant-layout {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.ant-layout-header {
+    background-color: #001529;
+    color: white;
+}
+
+.ant-layout-content {
+    flex: 1;
+    padding: 20px;
+}
+
+.ant-layout-footer {
+    text-align: center;
+}
+
+.create-sbl-btn {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none; /* Remove borders */
+    margin-right: "10px";
+}
+
+.create-sbl-btn:hover {
+    background-color: #45a049; /* Darker green on hover */
+    color: white;
+}
+
+.update-sbl-btn {
+    background-color: #FFA500; /* Orange background */
+    color: white; /* White text */
+    border: none; /* Remove borders */
+    margin-right: "10px";
+}
+
+.update-sbl-btn:hover {
+    background-color: #FF8C00; /* Darker orange on hover */
+    color: white;
+}
+
+.delete-sbl-btn {
+    background-color: #f44336; /* Red background */
+    color: white; /* White text */
+    border: none; /* Remove borders */
+    margin-right: "15px";
+}
+
+.delete-sbl-btn:hover {
+    background-color: #d32f2f; /* Darker red on hover */
+    color: white;
+}
