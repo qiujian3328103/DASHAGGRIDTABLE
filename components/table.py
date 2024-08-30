@@ -6,6 +6,8 @@ import sqlite3
 
 # Function to load data from SQLite database
 def load_data_from_db():
+    """Function to load data from SQLite database
+    """
     conn = sqlite3.connect(r'C:\Users\Jian Qiu\Dropbox\pythonprojects\DashAggridTable\test\test_database.db')
     cursor = conn.cursor()
 
@@ -79,5 +81,5 @@ def create_table():
         rowData=data,
         defaultColDef={"filter": True, "floatingFilter": True,  "wrapHeaderText": True, "autoHeaderHeight": True, "initialWidth": 125 },
         dashGridOptions={"pagination": True},
-        style={'height': '600px', 'width': '100%'}
+        style={'height': '650px', 'width': '100%'}
     )

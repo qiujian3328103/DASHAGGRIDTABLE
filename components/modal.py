@@ -3,6 +3,11 @@ from dash import html
 import feffery_antd_components as fac
 
 def create_new_sbl_record_modal():
+    """_summary_
+
+    Returns:
+        _type_: _description_
+    """
     # Modal for Creating New SBL
     return fac.AntdModal(
         [
