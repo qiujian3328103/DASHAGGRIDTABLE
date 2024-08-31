@@ -17,7 +17,7 @@ def load_data_from_db():
     # Convert to list of dictionaries
     data = [
         {
-            "Lot Id": row[0],
+            "Id": row[0],
             "SBA Date": row[1],
             "Eval Date": row[2],
             "Product": row[3],
@@ -54,7 +54,7 @@ def create_table():
     # Column definitions for AG Grid
     data = load_data_from_db()
     column_defs = [
-        {"headerName": "Lot Id", "field": "Lot Id"},
+        {"headerName": "Id", "field": "Id"},
         {"headerName": "SBA Date", "field": "SBA Date"},
         {"headerName": "Eval Date", "field": "Eval Date"},
         {"headerName": "Product", "field": "Product"},
@@ -74,9 +74,19 @@ def create_table():
         {"headerName": "FIT Status", "field": "FIT Status"},
         {"headerName": "Follow Up", "field": "Follow Up"},
         {"headerName": "Last Update", "field": "Last Update"},
+        {
+            "headerName": "Edit Item",
+            "field": "Edit Item",
+            "cellRenderer": "EditDeleteButton",
+            "cellRendererParams": {"className": "btn"},
+            "pinned": "right",
+            "floatingFilter": False,
+            "initialWidth": 200,
+        },
     ]
 
     return dag.AgGrid(
+        id='sbl-table',
         columnDefs=column_defs,
         rowData=data,
         defaultColDef={"filter": True, "floatingFilter": True,  "wrapHeaderText": True, "autoHeaderHeight": True, "initialWidth": 125 },

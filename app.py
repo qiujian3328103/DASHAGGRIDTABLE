@@ -15,25 +15,48 @@ app = dash.Dash(__name__)
 app.layout = html.Div([
     fac.AntdLayout([
         create_header(),
-        fac.AntdContent([
-            html.Div(
-                create_table(),
-                style={'padding': '20px'}
-            ), 
-            html.Div(
-                [
-                    fac.AntdButton("Create New SBL", id="create-sbl", type="primary", className='create-sbl-btn'),
-                    fac.AntdButton("Update SBL Table", id="update-sbl",type="primary", className='update-sbl-btn'),
-                    fac.AntdButton("Delete SBL Item", id="delete-sbl", type="primary", className='delete-sbl-btn', danger=True),
-                ],
-                style={"textAlign": "right", "marginTop": "20px"}  # Align buttons to the right and add margin to the top
+        fac.AntdLayout(
+            [
+                fac.AntdSider([
+                    fac.AntdMenu(
+                        menuItems=[
+                            {'component':'Item', 'props':{'key':'Home', 'title':'Home', 'icon':'antd-home'}},
+                            {'component':'Item', 'props':{'key':'Summary', 'title':'Summary', 'icon':'antd-bar-chart'}},
+                            {'component':'Item', 'props':{'key':'Setting', 'title':'Setting', 'icon':'antd-setting'}},
+                        ], 
+                        mode='inline',
+                        style={"height": "100%", "overflow": "hidden auto"}
+                    ),
+                ], 
+                collapsible=True,
+                collapsed=True,
+                collapsedWidth=60,
+                style={"backgroundColor": "rgb(240,242,245)"}
+                ),
+
+                fac.AntdLayout([
+                    fac.AntdContent([
+                        html.Div(
+                            create_table(),
+                            style={'padding': '20px'}
+                        ), 
+                        html.Div(
+                            [
+                                fac.AntdButton("Create New SBL", id="create-sbl", type="primary", className='create-sbl-btn'),
+                                fac.AntdButton("Update SBL Table", id="update-sbl",type="primary", className='update-sbl-btn'),
+                                fac.AntdButton("Delete SBL Item", id="delete-sbl", type="primary", className='delete-sbl-btn', danger=True),
+                            ],
+                            style={"textAlign": "right", "marginTop": "20px"}  # Align buttons to the right and add margin to the top
+                        ),
+                        create_footer("My Application")
+                    ]),
+                ]),
+            ]
             ),
         ]),
-        create_footer("My Application")
+        create_new_sbl_record_modal(),
+        html.Div(id='custom-component-btn-value-changed'),
     ]), 
-
-    create_new_sbl_record_modal(),
-])
 
 # Callback to open the modal
 @app.callback(
@@ -74,6 +97,23 @@ def create_sbl_record(okClicks, cancelClicks, sba_date, eval_date, product, bin_
     # Close the modal after either action, but only insert data if "Ok" was clicked
     return False
 
+
+# Callback to update or delete current SBL record
+@app.callback(
+    Output("custom-component-btn-value-changed", "children"),
+    Input("sbl-table", "cellRendererData"),
+)
+def handle_button_click(cell_renderer_data):
+    if cell_renderer_data:
+        action = cell_renderer_data.get('value', {}).get('action')
+        row_id = cell_renderer_data.get('value', {}).get('rowId')
+        print(action)
+        if action == 'edit':
+            return f'Edit button clicked for row {row_id}'
+        elif action == 'delete':
+            return f'Delete button clicked for row {row_id}'
+        print("no action taken")
+    return "No action taken"
 # Run the app
 if __name__ == '__main__':
     app.run_server(debug=True)
