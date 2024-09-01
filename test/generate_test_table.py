@@ -52,9 +52,9 @@ cursor.execute('''
 
 # Sample data to insert into sbl_table
 data = [
-    ('8/21/2024', '8/29/2024', 'Electron', 5999, 27, '7.52%', '0.46%', '0.15%', 'Open', 'Process', 'some coments', 'Needs actions', 'A', 'A', 'A', 'www.google.com', 'Open', 'some follow up', '2/1/2024'),
-    ('8/22/2024', '8/30/2024', 'Waikiki', 1837, 31, '8.52%', '0.52%', '0.12%', 'KIV', 'PGM', 'some coments', 'Needs actions', 'B', 'B', 'B', 'www.google.com', 'Closed', 'some follow up', '2/2/2024'),
-    ('8/23/2024', '8/31/2024', 'Cater', 4507, 51, '9.52%', '0.46%', '-0.10%', 'New', 'Process', 'some coments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024')
+    ('8/21/2024', '8/29/2024', 'Electron', 5999, 27, 7.52, 0.46, 0.15, 'Open', 'Process', 'some coments', 'Needs actions', 'A', 'A', 'A', 'www.google.com', 'Open', 'some follow up', '2/1/2024'),
+    ('8/22/2024', '8/30/2024', 'Waikiki', 1837, 31, 8.52, 0.52, 0.12, 'KIV', 'PGM', 'some coments', 'Needs actions', 'B', 'B', 'B', 'www.google.com', 'Closed', 'some follow up', '2/2/2024'),
+    ('8/23/2024', '8/31/2024', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some coments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024')
 ]
 
 # Insert the data into the sbl_table with a generated UUID for the foreigner_key
@@ -95,3 +95,5 @@ conn.commit()
 
 # Close the connection
 conn.close()
+
+
