@@ -1,7 +1,6 @@
 import dash 
-from dash import dcc, html, Dash, clientside_callback, callback_context
+from dash import dcc, html, Dash, clientside_callback, callback_context, DiskcacheManager, CeleryManager
 from dash.exceptions import PreventUpdate
-import dash_ag_grid as dag
 import feffery_antd_components as fac
 from dash.dependencies import Input, Output, State
 from components.header import create_header
@@ -13,10 +12,43 @@ from pages.setting import create_settings_page
 from pages.sbl_table import create_sbl_page
 from utilities.data_process import query_row_by_id
 from test_file_b64 import b64data
+from flask_caching import Cache
+from utilities.data_process import query_and_group_tat_time
 import uuid 
+import os 
+
+# Initialize the background callback manager
+if 'REDIS_URL' in os.environ:
+    # Use Redis & Celery if REDIS_URL set as an env variable
+    from celery import Celery
+    celery_app = Celery(__name__, broker=os.environ['REDIS_URL'], backend=os.environ['REDIS_URL'])
+    background_callback_manager = CeleryManager(celery_app)
+
+else:
+    # Diskcache for non-production apps when developing locally
+    import diskcache
+    cache = diskcache.Cache("./cache")
+    background_callback_manager = DiskcacheManager(cache)
+
 
 # Initialize Dash app
-app = Dash(__name__, suppress_callback_exceptions=True, title="SBL Tracker")
+app = Dash(__name__, 
+           title="SBL Tracker",
+           suppress_callback_exceptions=True, 
+           background_callback_manager=background_callback_manager)
+
+# Configure cache
+cache = Cache(app.server, config={
+    'CACHE_TYPE': 'filesystem',  # Use filesystem cache
+    'CACHE_DIR': 'cache-directory',  # Directory to store cached files
+    'CACHE_DEFAULT_TIMEOUT': 3000  # Cache timeout in seconds (50 minutes)
+})
+
+# Cache the query_and_group_tat_time function
+@cache.memoize()
+def get_cached_data():
+    return query_and_group_tat_time()
+
 
 # Define the layout
 app.layout = html.Div([
@@ -68,7 +100,7 @@ app.layout = html.Div([
 )
 def display_page(currentKey):
     if currentKey == 'Summary':
-        return create_summary_page()  # Render the summary page
+        return create_summary_page(get_cached_data)  # Render the summary page
     elif currentKey == 'Setting':
         return create_settings_page()  # Render the settings page
     else:

@@ -52,9 +52,30 @@ cursor.execute('''
 
 # Sample data to insert into sbl_table
 data = [
-    ('8/21/2024', '8/29/2024', 'Electron', 5999, 27, 7.52, 0.46, 0.15, 'Open', 'Process', 'some coments', 'Needs actions', 'A', 'A', 'A', 'www.google.com', 'Open', 'some follow up', '2/1/2024'),
-    ('8/22/2024', '8/30/2024', 'Waikiki', 1837, 31, 8.52, 0.52, 0.12, 'KIV', 'PGM', 'some coments', 'Needs actions', 'B', 'B', 'B', 'www.google.com', 'Closed', 'some follow up', '2/2/2024'),
-    ('8/23/2024', '8/31/2024', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some coments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024')
+    ('2024-06-21', '2024-08-23', 'Electron', 5999, 27, 7.52, 0.46, 0.15, 'Open', 'Process', 'some comments', 'Needs actions', 'A', 'A', 'A', 'www.google.com', 'Open', 'some follow up', '2/1/2024'),
+    ('2024-06-22', '2024-08-23', 'Waikiki', 1837, 31, 8.52, 0.52, 0.12, 'KIV', 'PGM', 'some comments', 'Needs actions', 'B', 'B', 'B', 'www.google.com', 'Closed', 'some follow up', '2/2/2024'),
+    ('2024-07-23', '2024-08-24', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-07-24', '2024-08-25', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'PGM', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-07-25', '2024-08-26', 'Waikiki', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-07-25', '2024-08-27', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-07-26', '2024-08-28', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'TBD', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-07-27', '2024-08-29', 'Waikiki', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-07-28', '2024-08-30', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-07-29', '2024-08-31', 'Waikiki', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'write comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-07-30', '2024-09-01', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'PGM', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-07-31', '2024-09-22', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-08-21', '2024-08-23', 'Electron', 5999, 27, 7.52, 0.46, 0.15, 'Open', 'Process', 'some comments', 'Needs actions', 'A', 'A', 'A', 'www.google.com', 'Open', 'some follow up', '2/1/2024'),
+    ('2024-08-22', '2024-08-23', 'Waikiki', 1837, 31, 8.52, 0.52, 0.12, 'KIV', 'PGM', 'some comments', 'Needs actions', 'B', 'B', 'B', 'www.google.com', 'Closed', 'some follow up', '2/2/2024'),
+    ('2024-08-23', '2024-08-24', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-08-24', '2024-08-25', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'PGM', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-08-25', '2024-08-26', 'Electron', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-08-25', '2024-08-27', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-08-26', '2024-08-28', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'TBD', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-08-27', '2024-08-29', 'Waikiki', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-08-28', '2024-08-30', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-08-29', '2024-08-31', 'Hamilton', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'write comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-08-30', '2024-09-01', 'Cater', 4507, 51, 9.52, 0.46, 0.10, 'New', 'PGM', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
+    ('2024-08-31', '2024-09-22', 'Hamilton', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024')
 ]
 
 # Insert the data into the sbl_table with a generated UUID for the foreigner_key

@@ -63,7 +63,60 @@ def load_data_from_db():
     conn.close()
     return data
 
-def create_table():
+def query_data_by_date_range(start_date, end_date):
+    print(start_date, end_date)
+    """Query data from the database based on the SBA Date range."""
+    conn = sqlite3.connect(r'C:\Users\Jian Qiu\Dropbox\pythonprojects\DashAggridTable\test\test_database.db')
+    cursor = conn.cursor()
+
+    cursor.execute('''
+        SELECT id, sba_date, eval_date, product, bin, sba_cnt, hit_rate, sba_avg, sba_limit, status, pgm_process, comment, action_item, assigned_team, action_owner, pe_owner, fit, fit_status, follow_up, last_update, foreigner_key
+        FROM sbl_table
+        WHERE sba_date BETWEEN ? AND ?
+    ''', (start_date, end_date))
+    rows = cursor.fetchall()
+
+    data = []
+    for row in rows:
+        foreigner_key = row[20]
+
+        cursor.execute('SELECT map_image FROM map_image WHERE foreigner_key = ?', (foreigner_key,))
+        map_images = cursor.fetchall()
+        map_image_b64 = [base64.b64encode(img[0]).decode('utf-8') for img in map_images]
+
+        cursor.execute('SELECT trend_image FROM trend_image WHERE foreigner_key = ?', (foreigner_key,))
+        trend_images = cursor.fetchall()
+        trend_image_b64 = [base64.b64encode(img[0]).decode('utf-8') for img in trend_images]
+
+        data.append({
+            "Id": row[0],
+            "SBA Date": row[1],
+            "Eval Date": row[2],
+            "Product": row[3],
+            "Bin": row[4],
+            "SBA CNT": row[5],
+            "Hit Rate": row[6],
+            "SBA Avg": row[7],
+            "SBA Limit": row[8],
+            "Status": row[9],
+            "PGM/Process": row[10],
+            "Comment": row[11],
+            "Action Item": row[12],
+            "Assigned Team": row[13],
+            "Action Owner": row[14],
+            "PE Owner": row[15],
+            "FIT": row[16],
+            "FIT Status": row[17],
+            "Follow Up": row[18],
+            "Last Update": row[19],
+            "Map Images": map_image_b64,
+            "Trend Images": trend_image_b64,
+        })
+
+    conn.close()
+    return data
+
+def create_table(data=None):
     """create a table component with the given data and column definitions
 
     Args:
@@ -71,7 +124,9 @@ def create_table():
         column_defs (list[dict]): The column definitions for the table
     """
     # Column definitions for AG Grid
-    data = load_data_from_db()
+    if data is None:
+        data = load_data_from_db()
+        
     column_defs = [
         {"headerName": "Id", "field": "Id", "initialWidth": 80},
         {"headerName": "SBA Date", "field": "SBA Date", "initialWidth": 90, "cellStyle": {"padding": "2px"},},

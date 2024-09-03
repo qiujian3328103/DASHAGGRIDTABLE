@@ -1,5 +1,7 @@
 import sqlite3
 import base64
+import pandas as pd 
+
 def insert_data_to_db(sba_date, eval_date, product, bin_value, sba_cnt, hit_rate, sba_avg, sba_limit, status):
     """Function to insert data into SQLite database
 
@@ -82,3 +84,32 @@ def query_row_by_id(row_id):
     else:
         conn.close()
         return None
+
+
+# Function to query data from the database and process it
+def query_and_group_tat_time():
+    conn = sqlite3.connect(r'C:\Users\Jian Qiu\Dropbox\pythonprojects\DashAggridTable\test\test_database.db')
+    query = '''
+        SELECT sba_date, eval_date, product
+        FROM sbl_table
+    '''
+    df = pd.read_sql(query, conn)
+    conn.close()
+
+    # Convert dates to datetime format
+    df['sba_date'] = pd.to_datetime(df['sba_date'])
+    df['eval_date'] = pd.to_datetime(df['eval_date'])
+
+    # Calculate year-week in the format YYYY-WW
+    df['year-week'] = df['sba_date'].dt.strftime('%Y-%W')
+
+    # Calculate turnaround time
+    df['tat_time'] = (df['eval_date'] - df['sba_date']).dt.days
+
+    # Group by year-week and calculate average turnaround time
+    grouped_df = df.groupby('year-week')['tat_time'].mean().reset_index()
+
+    # Sort by year-week
+    grouped_df = grouped_df.sort_values('year-week')
+
+    return grouped_df
