@@ -14,6 +14,9 @@ def create_indicator_card(title, get_cached_data):
     # Create the plot with hover information
     x = df['year-week'].tolist()
     y = df['tat_time'].tolist()
+
+    x = ["2021-WW" + str(i) for i in range(1, 7)]
+    y = [0, 1, 140, -15, 20, 1]
     fig = px.line(x=x, y=y, labels={"x": "Year-Week", "y": "Average TAT Time"})
 
     

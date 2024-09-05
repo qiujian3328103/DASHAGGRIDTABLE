@@ -77,9 +77,9 @@ app.layout = html.Div([
                 ),
 
                 fac.AntdLayout([
-                    fac.AntdContent(id='page-content',),
+                    fac.AntdContent(id='page-content', style={"height": "100%", "overflowY": "auto"}, children=[]),
                     create_footer("My Application"), 
-                ]),
+                ], style={"height": "100%", "overflow": "hidden auto"}),
             ]),
         ]),
         # Modal for creating a new SBL record

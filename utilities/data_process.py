@@ -1,6 +1,7 @@
 import sqlite3
 import base64
 import pandas as pd 
+from config import DB_URL
 
 def insert_data_to_db(sba_date, eval_date, product, bin_value, sba_cnt, hit_rate, sba_avg, sba_limit, status):
     """Function to insert data into SQLite database
@@ -16,7 +17,7 @@ def insert_data_to_db(sba_date, eval_date, product, bin_value, sba_cnt, hit_rate
         sba_limit (_type_): _description_
         status (_type_): _description_
     """
-    conn = sqlite3.connect(r'C:\Users\Jian Qiu\Dropbox\pythonprojects\DashAggridTable\test\test_database.db')
+    conn = sqlite3.connect(DB_URL)
     cursor = conn.cursor()
 
     cursor.execute('''
@@ -30,7 +31,7 @@ def insert_data_to_db(sba_date, eval_date, product, bin_value, sba_cnt, hit_rate
 
 def query_row_by_id(row_id):
     """Function to query a specific row from the SQLite database by ID."""
-    conn = sqlite3.connect(r'C:\Users\Jian Qiu\Dropbox\pythonprojects\DashAggridTable\test\test_database.db')
+    conn = sqlite3.connect(DB_URL)
     cursor = conn.cursor()
 
     # Fetch the specific row from sbl_table based on the provided ID
@@ -88,7 +89,7 @@ def query_row_by_id(row_id):
 
 # Function to query data from the database and process it
 def query_and_group_tat_time():
-    conn = sqlite3.connect(r'C:\Users\Jian Qiu\Dropbox\pythonprojects\DashAggridTable\test\test_database.db')
+    conn = sqlite3.connect(DB_URL)
     query = '''
         SELECT sba_date, eval_date, product
         FROM sbl_table

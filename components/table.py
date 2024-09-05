@@ -4,12 +4,12 @@ import feffery_antd_components as fac
 import sqlite3
 import base64
 from dash import html
-
+from config import DB_URL
 # Function to load data from SQLite database
 def load_data_from_db():
     """Function to load data from SQLite database
     """
-    conn = sqlite3.connect(r'C:\Users\Jian Qiu\Dropbox\pythonprojects\DashAggridTable\test\test_database.db')
+    conn = sqlite3.connect(DB_URL)
     cursor = conn.cursor()
 
     # Fetch data from sbl_table
@@ -66,7 +66,7 @@ def load_data_from_db():
 def query_data_by_date_range(start_date, end_date):
     print(start_date, end_date)
     """Query data from the database based on the SBA Date range."""
-    conn = sqlite3.connect(r'C:\Users\Jian Qiu\Dropbox\pythonprojects\DashAggridTable\test\test_database.db')
+    conn = sqlite3.connect(DB_URL)
     cursor = conn.cursor()
 
     cursor.execute('''
