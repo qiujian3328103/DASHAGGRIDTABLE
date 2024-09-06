@@ -41,19 +41,29 @@ def query_table_data(table_name):
     return column_names, formatted_data
 
 # Function to insert a new value into the table
-def insert_data(table_name, new_value):
+def insert_data(table_name, column_name, new_value):
     conn = sqlite3.connect(DB_URL)
     cursor = conn.cursor()
 
     # Check if the value already exists
-    cursor.execute(f'SELECT * FROM {table_name} WHERE pgm_process = ?', (new_value,))
+    cursor.execute(f'SELECT * FROM {table_name} WHERE {column_name} = ?', (new_value,))
     existing_entry = cursor.fetchone()
 
     if not existing_entry:
         # Insert new value
-        cursor.execute(f'INSERT INTO {table_name} (pgm_process) VALUES (?)', (new_value,))
+        cursor.execute(f'INSERT INTO {table_name} ({column_name}) VALUES (?)', (new_value,))
         conn.commit()
     
+    conn.close()
+
+# Function to delete a row from the table
+def delete_data(table_name, row_id, column_name):
+    conn = sqlite3.connect(DB_URL)
+    cursor = conn.cursor()
+
+    # Delete the row based on the provided ID
+    cursor.execute(f'DELETE FROM {table_name} WHERE {column_name} = ?', (row_id,))
+    conn.commit()
     conn.close()
 
 # Function to create the settings page
@@ -84,6 +94,7 @@ def create_settings_page():
                         data=pgm_process_data, 
                         locale="en-us",
                         bordered=True,
+                        maxHeight=300,
                         rowSelectionType='radio',  # Radio selection
                     ),
                 },
@@ -115,35 +126,11 @@ def create_settings_page():
         ),
     ])
 
-# Callback to populate input when a row is selected
-@callback(
-    Output('db-input', 'value'),
-    Input('table-pgm-process', 'selectedRows'),
-    Input('table-status', 'selectedRows'),
-    Input('table-fit-status', 'selectedRows'),
-    State('tab-selection', 'selectedRowKeys'),
-    prevent_initial_call=True
-)
-def populate_input(selected_rows_pgm, selected_rows_status, selected_rows_fit, active_tab):
-    if active_tab == 'pgm-process-tab' and selected_rows_pgm:
-        selected_row = selected_rows_pgm[0]  # Get the first selected row
-        return selected_row.get('pgm_process')  # Return the value of the selected row for pgm_process_table
-
-    elif active_tab == 'status-tab' and selected_rows_status:
-        selected_row = selected_rows_status[0]  # Get the first selected row
-        return selected_row.get('status')  # Return the value of the selected row for status_table
-
-    elif active_tab == 'fit-tab' and selected_rows_fit:
-        selected_row = selected_rows_fit[0]  # Get the first selected row
-        return selected_row.get('fit_status')  # Return the value of the selected row for fit_status_table
-    
-    return ''
-
 # Callback to handle adding a new record based on the active tab
 @callback(
-    Output('table-pgm-process', 'data'),
-    Output('table-status', 'data'),
-    Output('table-fit-status', 'data'),
+    Output('table-pgm-process', 'data', allow_duplicate=True),
+    Output('table-status', 'data', allow_duplicate=True),
+    Output('table-fit-status', 'data', allow_duplicate=True),
     Input('db-add-btn', 'nClicks'),
     State('db-input', 'value'),
     State('tab-selection', 'activeKey'),  # Corrected to match the tab id
@@ -155,11 +142,46 @@ def add_data_to_table(nClicks, new_value, active_tab):
 
     # Determine which table to insert the data into based on the active tab
     if active_tab == 'pgm-process-tab':
-        insert_data('pgm_process_table', new_value)
+        insert_data('pgm_process_table', 'pgm_process', new_value)
     elif active_tab == 'status-tab':
-        insert_data('status_table', new_value)
+        insert_data('status_table','status', new_value)
     elif active_tab == 'fit-tab':
-        insert_data('fit_status_table', new_value)
+        insert_data('fit_status_table','fit_status', new_value)
+
+    # Re-query all tables to get updated data
+    pgm_process_columns, pgm_process_data = query_table_data('pgm_process_table')
+    status_columns, status_data = query_table_data('status_table')
+    fit_status_columns, fit_status_data = query_table_data('fit_status_table')
+
+    # Return the updated data for all tables
+    return pgm_process_data, status_data, fit_status_data
+
+# Callback to handle deleting a selected record based on the active tab
+@callback(
+    Output('table-pgm-process', 'data', allow_duplicate=True),
+    Output('table-status', 'data', allow_duplicate=True),
+    Output('table-fit-status', 'data', allow_duplicate=True),
+    Input('db-delete-btn', 'nClicks'),
+    State('tab-selection', 'activeKey'),
+    State('table-pgm-process', 'selectedRows'),
+    State('table-status', 'selectedRows'),
+    State('table-fit-status', 'selectedRows'),
+    prevent_initial_call=True
+)
+def delete_data_from_table(nClicks, active_tab, pgm_selected, status_selected, fit_selected):
+    if not nClicks:
+        raise PreventUpdate
+
+    # Determine which table and selected row to delete based on the active tab
+    if active_tab == 'pgm-process-tab' and pgm_selected:
+        row_id = pgm_selected[0]['pgm_process']
+        delete_data('pgm_process_table', row_id, 'pgm_process')
+    elif active_tab == 'status-tab' and status_selected:
+        row_id = status_selected[0]['status']
+        delete_data('status_table', row_id, 'status')
+    elif active_tab == 'fit-tab' and fit_selected:
+        row_id = fit_selected[0]['fit_status']
+        delete_data('fit_status_table', row_id, 'fit_status')
 
     # Re-query all tables to get updated data
     pgm_process_columns, pgm_process_data = query_table_data('pgm_process_table')

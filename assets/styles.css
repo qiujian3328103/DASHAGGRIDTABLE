@@ -108,3 +108,15 @@ button.rounded-full {
     align-items: center;
     justify-content: center;
 }
+
+
+/* setup the ant table style */
+.ant-table {
+    height: 450px;
+}
+
+.ant-table-thead > tr > th {
+    background-color: #4b4b4b !important;
+    color: white !important;
+    font-weight: bold;
+}
