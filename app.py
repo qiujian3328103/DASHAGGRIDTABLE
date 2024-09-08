@@ -54,6 +54,7 @@ def get_cached_data():
 app.layout = html.Div([
     # Store for tracking all pasted map images and their data
     dcc.Store(id='map-image-store', data=[]),
+    fac.Fragment(id='fragment-demo'),
     fac.AntdLayout([
         create_header(),
         fac.AntdLayout(
