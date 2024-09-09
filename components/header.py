@@ -16,13 +16,18 @@ def create_header():
             ], span=16),
             
             fac.AntdCol([
-                html.Div([
+                fac.AntdSpace([
                     fac.AntdAvatar(
                         src="https://example.com/avatar.png",
                         size=40
                     ),
-                    html.Span("Username", style={"marginLeft": "10px", "color": "white", "fontSize": "16px"})
-                ], style={"float": "right", "display": "flex", "alignItems": "center"})
+                    html.Span("Username", style={"marginLeft": "10px", "color": "white", "fontSize": "16px"}),
+                    fac.AntdSwitch(
+                        id='theme-switch',
+                        checkedChildren='Bright',
+                        unCheckedChildren='Dark'
+                    ),
+                ],direction="horizontal", wrap=True)
             ], span=8, style={"textAlign": "right"})
         ])
     ])

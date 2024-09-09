@@ -201,6 +201,7 @@ def create_table(data=None):
 
     return dag.AgGrid(
         id='sbl-table',
+        className='ag-theme-alpine',
         columnDefs=column_defs,
         rowData=data,
         defaultColDef={"filter": True, "floatingFilter": True,  "wrapHeaderText": True, "autoHeaderHeight": True, "initialWidth": 125 },

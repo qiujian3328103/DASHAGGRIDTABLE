@@ -5,6 +5,7 @@ import feffery_antd_components as fac
 from dash.dependencies import Input, Output, State
 from components.header import create_header
 from components.footer import create_footer
+from components.sidebar import create_sidebar
 from components.modal import create_new_sbl_record_modal, create_image_display_modal, create_edit_sbl_modal
 from components.customized_image_card import create_customized_image_card, create_image_div
 from pages.summary import create_summary_page
@@ -60,48 +61,65 @@ def get_cached_data():
 
 
 # Define the layout
-app.layout = html.Div([
-    # Store for tracking all pasted map images and their data
-    dcc.Store(id='map-image-store', data=[]),
-    fac.Fragment(id='fragment-demo'),
-    fac.AntdLayout([
-        create_header(),
-        fac.AntdLayout(
-            [
-                fac.AntdSider([
-                    fac.AntdMenu(
-                        id='menu',
-                        menuItems=[
-                            {'component':'Item', 'props':{'key':'Home', 'title':'Home', 'icon':'antd-home', 'href': '/Home',}},
-                            {'component':'Item', 'props':{'key':'Summary', 'title':'Summary', 'icon':'antd-bar-chart', 'href': '/Summary',}},
-                            {'component':'Item', 'props':{'key':'Setting', 'title':'Setting', 'icon':'antd-setting', 'href': '/Setting',}},
-                        ], 
-                        mode='inline',
-                        style={"height": "100%", "overflow": "hidden auto"},
-                    ),
-                ], 
-                collapsible=True,
-                collapsed=True,
-                collapsedWidth=60,
-                style={"backgroundColor": "rgb(240,242,245)"}
-                ),
+app.layout = fac.AntdConfigProvider(
+    id='config-provider-algorithm-demo',
+    algorithm='default',
+    children=[
+                html.Div([
+                    # Store for tracking all pasted map images and their data
+                    dcc.Store(id='map-image-store', data=[]),
+                    fac.Fragment(id='fragment-demo'),
+                    fac.AntdLayout([
+                        # create a header
+                        create_header(),
+                        # create a side bar
+                        fac.AntdLayout(
+                            [
+                                create_sidebar(),
+                                fac.AntdDrawer('UserSetting', title='User Settings', id='drawer-basic'),
+                                fac.AntdLayout([
+                                    fac.AntdContent(id='page-content', style={"height": "100%", "overflowY": "auto"}, children=[]),
+                                    create_footer("My Application"), 
+                                ], style={"height": "100%", "overflow": "hidden auto"}),
+                            ]),
+                        
+                        ]),
+                        # Modal for creating a new SBL record
+                        create_new_sbl_record_modal(),
+                        # Modal for editing an existing SBL record
+                        create_edit_sbl_modal(),
+                        # Modal for displaying the images in a grid layout
+                        create_image_display_modal(),
+                        # Test Modal
+                        # html.Div(id='custom-component-btn-value-changed'),
+                ]), 
+            ]
+    )
 
-                fac.AntdLayout([
-                    fac.AntdContent(id='page-content', style={"height": "100%", "overflowY": "auto"}, children=[]),
-                    create_footer("My Application"), 
-                ], style={"height": "100%", "overflow": "hidden auto"}),
-            ]),
-        ]),
-        # Modal for creating a new SBL record
-        create_new_sbl_record_modal(),
-        # Modal for editing an existing SBL record
-        create_edit_sbl_modal(),
-        # Modal for displaying the images in a grid layout
-        create_image_display_modal(),
-        # Test Modal
-        # html.Div(id='custom-component-btn-value-changed'),
-    ]), 
+# change the theme of the app
+app.clientside_callback(
+    '''
+    function(checked) {
+        const theme = checked ? 'dark' : 'default';
+        const agGridTheme = checked ? 'ag-theme-alpine-dark' : 'ag-theme-alpine';
+        return [theme, agGridTheme];
+    }
+    ''',
+    [Output('config-provider-algorithm-demo', 'algorithm'),
+     Output('sbl-table', 'className', allow_duplicate=True)],
+    Input('theme-switch', 'checked'), 
+    prevent_initial_call=True
+)
 
+@app.callback(
+    Output('drawer-basic', 'visible'),
+    Input('download-sba', 'nClicks'),
+    prevent_initial_call=True,
+)
+def drawer_basic_demo(nCLicks):
+    if nCLicks:
+        return True
+    return False
 
 # Define the callback to update page content based on URL
 @app.callback(
@@ -319,34 +337,3 @@ def upload():
 
 if __name__ == '__main__':
     app.run_server(debug=True)
-
-
-
-# Callback to insert data into the database when the "Ok" button is clicked, and close the modal
-# @app.callback(
-#     Output('modal-create-sbl', 'visible', allow_duplicate=True),
-#     Input('modal-create-sbl', 'okCounts'),
-#     Input('modal-create-sbl', 'cancelCounts'),
-#     State('sba-date', 'value'),
-#     State('eval-date', 'value'),
-#     State('product', 'value'),
-#     State('bin', 'value'),
-#     State('sba-cnt', 'value'),
-#     State('hit-rate', 'value'),
-#     State('sba-avg', 'value'),
-#     State('sba-limit', 'value'),
-#     State('status', 'value'),
-#     prevent_initial_call=True
-# )
-# def create_sbl_record(okClicks, cancelClicks, sba_date, eval_date, product, bin_value, sba_cnt, hit_rate, sba_avg, sba_limit, status):
-#     ctx = dash.callback_context
-
-#     if not ctx.triggered:
-#         return False
-#     button_id = ctx.triggered[0]['prop_id'].split('.')[0]
-
-#     if button_id == 'modal-create-sbl-ok':
-#         insert_data_to_db(sba_date, eval_date, product, bin_value, sba_cnt, hit_rate, sba_avg, sba_limit, status)
-    
-#     # Close the modal after either action, but only insert data if "Ok" was clicked
-#     return False
