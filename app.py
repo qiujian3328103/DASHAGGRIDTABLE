@@ -6,7 +6,7 @@ from dash.dependencies import Input, Output, State
 from components.header import create_header
 from components.footer import create_footer
 from components.modal import create_new_sbl_record_modal, create_image_display_modal, create_edit_sbl_modal
-from components.customized_image_card import create_customized_image_card
+from components.customized_image_card import create_customized_image_card, create_image_div
 from pages.summary import create_summary_page
 from pages.setting import create_settings_page
 from pages.sbl_table import create_sbl_page
@@ -16,6 +16,15 @@ from flask_caching import Cache
 from utilities.data_process import query_and_group_tat_time
 import uuid 
 import os 
+import flask
+import base64
+from werkzeug.utils import secure_filename
+
+ALLOWED_EXTENSIONS = {'png', 'jpg', 'jpeg', 'gif'}
+
+def allowed_file(filename):
+    return '.' in filename and \
+           filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 # Initialize the background callback manager
 if 'REDIS_URL' in os.environ:
@@ -136,8 +145,9 @@ def show_image_modal(data):
             image_components = [
                 fac.AntdImage(
                     src=f"data:image/jpeg;base64,{img}",
-                    height=200,  # Adjust height as needed
-                    preview=False,
+                    height=200,
+                    preview=True,
+                    locale="en-us",
                 ) for img in images
             ]
             return True, image_components
@@ -162,6 +172,10 @@ def show_image_modal(data):
 )
 def handle_edit_button_click(cell_renderer_data):
     if cell_renderer_data:
+        if isinstance(cell_renderer_data.get('value', {}), list):
+            # if the cell_renderer_data is a list, it means the data is from the image columns
+            # so we need to prevent the update  
+            raise PreventUpdate
         action = cell_renderer_data.get('value', {}).get('action')
         row_id = cell_renderer_data.get('value', {}).get('rowId')
         
@@ -182,6 +196,8 @@ def handle_edit_button_click(cell_renderer_data):
                     row_data['SBA Limit'],
                     row_data['Status']
                 )
+        else:
+            raise PreventUpdate
     raise PreventUpdate
 
 
@@ -231,7 +247,7 @@ def update_image_group(image_info, current_children, image_store_data):
         image_id = str(uuid.uuid4())
         
         # Create a new image card using the base64 image data and assign it the unique ID
-        new_image_card = create_customized_image_card(
+        new_image_card = create_image_div(
             image_url=image_base64,
             card_id=image_id
         )
@@ -278,6 +294,29 @@ def remove_image_card(n_clicks, current_children, image_store_data):
 
     return updated_children, updated_image_store_data
 
+
+# Add this route to your app
+@app.server.route('/upload/', methods=['POST'])
+def upload():
+    if 'file' not in flask.request.files:
+        return flask.jsonify({'error': 'No file part'}), 400
+    file = flask.request.files['file']
+    if file.filename == '':
+        return flask.jsonify({'error': 'No selected file'}), 400
+    if file and allowed_file(file.filename):
+        filename = secure_filename(file.filename)
+        file_path = os.path.join(app.server.config['UPLOAD_FOLDER'], filename)
+        file.save(file_path)
+        with open(file_path, 'rb') as f:
+            encoded_content = base64.b64encode(f.read()).decode('utf-8')
+        return flask.jsonify({
+            'status': 'success',
+            'fileName': filename,
+            'fileContent': encoded_content
+        })
+    return flask.jsonify({'error': 'File type not allowed'}), 400
+
+
 if __name__ == '__main__':
     app.run_server(debug=True)
 
@@ -311,4 +350,3 @@ if __name__ == '__main__':
     
 #     # Close the modal after either action, but only insert data if "Ok" was clicked
 #     return False
-

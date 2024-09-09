@@ -33,3 +33,21 @@ def create_customized_image_card(image_url, card_id):
         },
         size="small"
     )
+    
+    
+def create_image_div(image_url, card_id):
+    return html.Div(
+        id=card_id,
+        style={'position': 'relative', 'display': 'inline-block', 'margin': '10px'},
+        children=[
+            fac.AntdImage(
+                src=image_url,
+                style={'width': '100px', 'height': '100px'}
+            ),
+            fac.AntdIcon(
+                icon='antd-close-circle-two-tone',
+                style={'position': 'absolute', 'top': '5px', 'right': '5px', 'fontSize': '20px', 'color': 'red', 'cursor': 'pointer'},
+                id={"type": "close-button", "index": card_id}  # Dynamic ID
+            )
+        ]
+    )

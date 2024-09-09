@@ -7,7 +7,7 @@ import dash
 from dash import html, Output, Input, State
 import feffery_antd_components as fac
 import feffery_utils_components as fuc
-from components.customized_image_card import create_customized_image_card
+from components.customized_image_card import create_customized_image_card, create_image_div
 
 def create_new_sbl_record_modal():
     return fac.AntdModal(
@@ -149,13 +149,13 @@ def create_edit_sbl_modal():
             # Text area for Comment
             fac.AntdRow([
                 fac.AntdCol(html.Label('Comment:', style={'marginRight': '10px'}), span=2),
-                fac.AntdCol(fac.AntdInput(id='edit-comment', placeholder='Enter Comment', mode='text-area'), span=20),
+                fac.AntdCol(fac.AntdInput(id='edit-comment', placeholder='Enter Comment', mode='text-area', style={'autoSize': True, 'height': '10px'}), span=20),
             ], style={'marginBottom': '10px'}),
 
             # Text area for Follow Up
             fac.AntdRow([
                 fac.AntdCol(html.Label('Follow Up:', style={'marginRight': '10px'}), span=2),
-                fac.AntdCol(fac.AntdInput(id='edit-follow-up', placeholder='Enter Follow Up', mode='text-area'), span=20),
+                fac.AntdCol(fac.AntdInput(id='edit-follow-up', placeholder='Enter Follow Up', mode='text-area', style={'autoSize': True, 'height': '10px'}), span=20),
             ], style={'marginBottom': '10px'}),
 
             # Upload input for Map Image

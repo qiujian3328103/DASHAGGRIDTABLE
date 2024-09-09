@@ -73,3 +73,104 @@ dagcomponentfuncs.ImgThumbnail = function (props) {
         )
     );
 };
+
+
+// dagcomponentfuncs.CustomLoadingOverlay = function (props) {
+//     return React.createElement(
+//         'div',
+//         {
+//             style: {
+//                 border: '1pt solid grey',
+//                 color: props.color || 'grey',
+//                 padding: 10,
+//             },
+//         },
+//         props.loadingMessage
+//     );
+// };
+
+// Custom cell renderer for displaying logos with a preview feature
+dagcomponentfuncs.LogoRenderer = function (props) {
+    // Function to handle the click event for the preview
+    function handlePreviewClick(imageUrl) {
+        // Create a modal to display the larger image
+        const modal = document.createElement('div');
+        modal.style.position = 'fixed';
+        modal.style.top = '0';
+        modal.style.left = '0';
+        modal.style.width = '100%';
+        modal.style.height = '100%';
+        modal.style.backgroundColor = 'rgba(0, 0, 0, 0.5)';
+        modal.style.display = 'flex';
+        modal.style.justifyContent = 'center';
+        modal.style.alignItems = 'center';
+        modal.style.zIndex = '1000';
+
+        // Create the large image element
+        const img = document.createElement('img');
+        img.src = imageUrl;
+        img.style.maxWidth = '90%';
+        img.style.maxHeight = '90%';
+        img.style.border = '5px solid white';
+        img.style.borderRadius = '10px';
+
+        // Append the image to the modal
+        modal.appendChild(img);
+
+        // Close the modal when clicked
+        modal.addEventListener('click', function() {
+            document.body.removeChild(modal);
+        });
+
+        // Append the modal to the body
+        document.body.appendChild(modal);
+    }
+
+    // Create the image element using React.createElement
+    const imgElement = React.createElement('img', {
+        src: props.value,
+        style: { height: '50px', width: 'auto', borderRadius: '5px' }
+    });
+
+    // Create the preview icon
+    const previewIcon = React.createElement(
+        'div',
+        {
+            style: {
+                position: 'absolute',
+                top: '5px',
+                right: '5px',
+                backgroundColor: 'rgba(0, 0, 0, 0.5)',
+                color: 'white',
+                padding: '5px',
+                borderRadius: '50%',
+                cursor: 'pointer',
+                display: 'none'
+            },
+            onClick: function () {
+                handlePreviewClick(props.value);  // Open the larger image in a modal
+            }
+        },
+        '🔍'  // Preview icon (magnifying glass emoji)
+    );
+
+    // Container for both the image and the preview icon
+    const container = React.createElement(
+        'div',
+        {
+            style: {
+                position: 'relative',
+                display: 'inline-block'
+            },
+            onMouseEnter: function () {
+                previewIcon.props.style.display = 'block';  // Show preview icon on hover
+            },
+            onMouseLeave: function () {
+                previewIcon.props.style.display = 'none';  // Hide preview icon when mouse leaves
+            }
+        },
+        imgElement, previewIcon  // Append both the image and the preview icon to the container
+    );
+
+    return container;
+};

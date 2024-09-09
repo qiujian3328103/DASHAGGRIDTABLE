@@ -204,6 +204,11 @@ def create_table(data=None):
         columnDefs=column_defs,
         rowData=data,
         defaultColDef={"filter": True, "floatingFilter": True,  "wrapHeaderText": True, "autoHeaderHeight": True, "initialWidth": 125 },
-        dashGridOptions={"pagination": True, "rowHeight": 90},
+        dashGridOptions={"pagination": True, "rowHeight": 90,
+                        "loadingOverlayComponent": "CustomLoadingOverlay",
+                        "loadingOverlayComponentParams": {
+                        "loadingMessage": "One moment please...",
+                        "color": "red",
+                        },},
         style={'height': '650px', 'width': '100%'}
     )
