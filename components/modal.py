@@ -34,31 +34,29 @@ def create_new_sbl_record_modal():
                             id='image-paste-demo',
                             disabled=True
                         ),
-                    ],
-                    span=3
-                ),
+                    ],span=3),
                 fac.AntdCol(
-                    [
-                        fuc.FefferyDiv(
-                            [
-                                fac.AntdImageGroup(
-                                    id='image-paste-output-group',
-                                    children=[]  # Initially empty
-                                ),
-                            ], 
-                            style={
-                                'height': '120px',
-                                'width': '100%',
-                                'display': 'flex',
-                                'justifyContent': 'center',
-                                'alignItems': 'left',
-                                'borderRadius': '6px',
-                                'border': '1px solid #f0f0f0',
-                            }),
-                    ],
-                    span=21
-                ),
-            ], style={'marginBottom': '10px'}),
+                        [
+                            fuc.FefferyDiv(
+                                [
+                                    fac.AntdImageGroup(
+                                        id='image-paste-output-group',
+                                        children=[]  # Initially empty
+                                    ),
+                                ], 
+                                style={
+                                    'height': '120px',
+                                    'width': '100%',
+                                    'display': 'flex',
+                                    'justifyContent': 'center',
+                                    'alignItems': 'left',
+                                    'borderRadius': '6px',
+                                    'border': '1px solid #f0f0f0',
+                                }),
+                        ],
+                        span=21
+                    ),
+                ], style={'marginBottom': '10px'}),
         ],
         id='modal-create-sbl',
         visible=False,
