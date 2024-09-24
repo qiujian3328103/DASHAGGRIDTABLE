@@ -14,6 +14,59 @@ def create_modal_content():
         [
         fac.AntdRow(
             [
+                fac.AntdSpace(
+                    [
+                        fac.AntdSpace(
+                            [
+                                fac.AntdText('Date'),
+                                fac.AntdDatePicker(
+                                    id='date-picker',
+                                    style={'width': '100%'}
+                                ),
+                            ], 
+                            direction='vertical', 
+                            wrap=True,
+                            style={'width': '100%',}
+                        ),
+                        fac.AntdSpace(
+                            [
+                                fac.AntdText('Date'),
+                                fac.AntdDatePicker(
+                                    id='date-picker',
+                                    style={'width': '100%'}
+                                ),
+                            ], 
+                            direction='vertical', 
+                            wrap=True,  
+                            style={'width': '100%'}
+                        ),
+                        fac.AntdSpace(
+                            [
+                                fac.AntdText('Date'),
+                                fac.AntdDatePicker(
+                                    id='date-picker',
+                                    style={'width': '100%'}
+                                ),
+                            ], 
+                            direction='vertical', 
+                            wrap=True,    
+                            style={'width': '100%'}
+                        ),
+                        fac.AntdSpace(
+                            [
+                                fac.AntdText('Date'),
+                                fac.AntdDatePicker(
+                                    id='date-picker',
+                                    style={'width': '100%'}
+                                ),
+                            ], 
+                            direction='vertical',    
+                            wrap=True,
+                            style={'width': '100%'}
+                        )
+                    ],
+                    style={'width': '100%', 'margin-bottom': '10px'},
+                ),
                 fac.AntdCol(
                     [
                         fac.AntdSpace(
@@ -26,10 +79,10 @@ def create_modal_content():
                             ], 
                             direction='vertical', 
                             wrap=True,
-                            style={'width': '100%'}
+                            style={'width': '100%',}
                         )
                     ], 
-                    style={'width': '100%'},
+                    style={'margin-bottom': '10px'},
                     span=6
                 ),
                 fac.AntdCol(
@@ -47,7 +100,7 @@ def create_modal_content():
                             style={'width': '100%'}
                         )       
                     ], 
-                    style={'width': '100%'},
+                    style={'margin-bottom': '10px'},
                     span=6
                 ),
                 fac.AntdCol(
@@ -55,8 +108,9 @@ def create_modal_content():
                         fac.AntdSpace(
                             [   
                                 fac.AntdText('Date'),
-                                fac.AntdDatePicker(
-                                    id='date-picker',
+                                fac.AntdInput(
+                                    id='input-field',
+                                    placeholder='Enter text here',
                                     style={'width': '100%'}
                                 ),
                             ], 
@@ -65,7 +119,7 @@ def create_modal_content():
                             style={'width': '100%'}         
                         )
                     ], 
-                    style={'width': '100%'},
+                    style={ 'margin-bottom': '10px'},
                     span=6
                 ),
                 fac.AntdCol(
@@ -73,8 +127,12 @@ def create_modal_content():
                         fac.AntdSpace(                
                             [
                                 fac.AntdText('Date'),
-                                fac.AntdDatePicker(
-                                    id='date-picker',
+                                fac.AntdSelect(
+                                    options=[
+                                        {'label': 'Option 1', 'value': 'option1'},
+                                        {'label': 'Option 2', 'value': 'option2'},
+                                        {'label': 'Option 3', 'value': 'option3'}
+                                    ],
                                     style={'width': '100%'}
                                 ),
                             ], 
@@ -83,7 +141,7 @@ def create_modal_content():
                             style={'width': '100%'}
                         )
                     ], 
-                    style={'width': '100%'},
+                    style={'margin-bottom': '10px'},
                     span=6
                 ),
             ]   
@@ -91,7 +149,7 @@ def create_modal_content():
     ],
     visible=False,
     id='modal-content',
-    width="55vw",
+    width="85vw",
     # closable=False,
     # centered=True,
     # maskClosable=False,
