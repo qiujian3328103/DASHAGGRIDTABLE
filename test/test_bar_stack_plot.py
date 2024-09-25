@@ -34,16 +34,18 @@ for status in statuses:
         )
     )
 
-# Create the line trace for the closed ratio
+# Create the line trace for the closed ratio, showing text for each point
 line_trace = go.Scatter(
     x=df_grouped.index,
     y=df_grouped['closed_ratio'],
-    mode='lines+markers',
+    mode='lines+markers+text',
     name='Closed Ratio',
     yaxis='y2',
     hovertemplate=
     '<b>Year-Month:</b> %{x}<br>' +
     '<b>Closed Ratio:</b> %{y:.2f}<extra></extra>',  # Custom hovertemplate for the line
+    text=df_grouped['closed_ratio'].round(2),  # Display the rounded closed ratio as text
+    textposition='top center'  # Position the text above the data points
 )
 
 # Set up the layout for secondary y-axis and legend position
