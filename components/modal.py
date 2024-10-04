@@ -1,8 +1,8 @@
 import dash
-from dash import html
+from dash import html, callback, Input, Output, State
 import feffery_antd_components as fac
 import feffery_utils_components as fuc
-
+from dash.exceptions import PreventUpdate
 import dash
 from dash import html, Output, Input, State
 import feffery_antd_components as fac
@@ -12,6 +12,29 @@ from components.customized_image_card import create_customized_image_card, creat
 def create_new_sbl_record_modal():
     return fac.AntdModal(
         [
+            fac.AntdRow([
+                fac.AntdCol(html.Label('SBA Avg:', style={'marginRight': '10px'}), span=2),
+                fac.AntdCol(fac.AntdSelect(id={"type": 'create-input', "key": 'sba-avg'}, options=["value1", "value2"], value='value1'), span=20),
+            ], style={'marginBottom': '10px'}),
+
+            # SBA Limit as Number Input with Percentage Addon
+            fac.AntdRow([
+                fac.AntdCol(html.Label('SBA Limit:', style={'marginRight': '10px'}), span=2),
+                fac.AntdCol(fac.AntdInputNumber(id={"type": 'create-input', "key": 'sba-limit'}, placeholder='Enter SBA Limit', addonAfter='%', style={'width': '100%'}), span=20),
+            ], style={'marginBottom': '10px'}),
+
+            # Status as Text Input
+            fac.AntdRow([
+                fac.AntdCol(html.Label('Status:', style={'marginRight': '10px'}), span=2),
+                fac.AntdCol(fac.AntdInput(id={"type": 'create-input', "key": 'status'}, placeholder='Enter Status'), span=20),
+            ], style={'marginBottom': '10px'}),
+
+            # Text area for Comment
+            fac.AntdRow([
+                fac.AntdCol(html.Label('Comment:', style={'marginRight': '10px'}), span=2),
+                fac.AntdCol(fac.AntdInput(id={"type": 'create-input', "key": 'comment'}, placeholder='Enter Comment', mode='text-area', style={'autoSize': True, 'height': '10px'}), span=20),
+            ], style={'marginBottom': '10px'}),
+
             fac.AntdRow([
                 fac.AntdCol(
                     [
@@ -196,3 +219,16 @@ def create_edit_sbl_modal():
         cancelText='Cancel',
         width='75vw',
     )
+    
+# @callable(
+#     Output('modal-create-sbl', 'visible'),
+#     # Output({'type': 'create-input', 'key': 'sba-avg'}, 'options'),
+#     Input('open-modal-button', 'nClicks'),
+#     prevent_initial_call=True
+# )
+# def open_modal(n_clicks):
+#     if n_clicks is None:
+#         raise PreventUpdate
+                    
+    
+#     return True

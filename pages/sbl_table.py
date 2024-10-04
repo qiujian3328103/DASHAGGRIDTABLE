@@ -39,6 +39,7 @@ def create_sbl_page():
                     ], style={"textAlign": "center"}),
                 ], span=16),
                 fac.AntdCol([
+                    fac.AntdButton("Auto Craete SBL", id="auto-create-sbl", className="auto-create-sbl-btn", type="primary"),
                     fac.AntdButton("Create New SBL", id="create-sbl", type="primary",),
                     fac.AntdButton("Download CSV", id="download-sba", type="primary", danger=True),
                 ], span=8, style={"textAlign": "right"}),

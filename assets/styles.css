@@ -120,3 +120,39 @@ button.rounded-full {
     color: white !important;
     font-weight: bold;
 }
+
+
+/* auto create sbl button */
+.auto-create-sbl-btn {
+    background-color: #4CAF50; /* Green background */
+    color: white; /* White text */
+    border: none; /* Remove borders */
+    margin-right: "10px";
+}
+
+
+.auto-create-sbl-btn {
+    background:  #4CAF50;;
+    color: white;
+    transition: transform 0.2s ease;
+}
+
+.auto-create-sbl-btn:hover {
+    background: #81c784;
+    color: white;
+    border-color: white;
+}
+
+/* 覆盖聚焦状态样式 */
+.auto-create-sbl-btn:focus {
+    background: #81c784;
+    color: white;
+    border-color: white;
+}
+
+.auto-create-sbl-btn:active {
+    background: #4CAF50;
+    color: white;
+    border-color: white;
+    transform: translateY(3px);
+}

@@ -17,7 +17,18 @@ dagcomponentfuncs.EditDeleteButton = function (props) {
 
     return React.createElement(
         'div',
-        { style: { display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' } },
+        // { style: { display: 'flex', justifyContent: 'space-evenly', alignItems: 'center' } },
+        {
+            style: { 
+                display: 'grid',  // Use grid layout
+                gridTemplateColumns: 'repeat(2, 1fr)',  // Fixed 2 columns per row
+                gap: '10px',  // Space between buttons
+                alignItems: 'center',
+                justifyContent: 'center',
+                width: '100%'  // Allow the grid to take full width
+            } ,
+        },
+
         React.createElement(
             'button',
             {

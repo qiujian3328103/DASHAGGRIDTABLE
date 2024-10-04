@@ -41,6 +41,7 @@ def create_image_div(image_url, card_id):
         style={'position': 'relative', 'display': 'inline-block', 'margin': '10px'},
         children=[
             fac.AntdImage(
+                id={"type": "image", "index": card_id},  # Dynamic ID
                 src=image_url,
                 style={'width': '100px', 'height': '100px'}
             ),

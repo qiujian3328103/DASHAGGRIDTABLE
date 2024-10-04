@@ -12,7 +12,7 @@ from pages.summary import create_summary_page
 from pages.setting import create_settings_page
 from pages.sbl_table import create_sbl_page
 from utilities.data_process import query_row_by_id
-from test_file_b64 import b64data
+from test.test_file_b64 import b64data
 from flask_caching import Cache
 from utilities.data_process import query_and_group_tat_time
 import uuid 
@@ -97,19 +97,19 @@ app.layout = fac.AntdConfigProvider(
     )
 
 # change the theme of the app
-app.clientside_callback(
-    '''
-    function(checked) {
-        const theme = checked ? 'dark' : 'default';
-        const agGridTheme = checked ? 'ag-theme-alpine-dark' : 'ag-theme-alpine';
-        return [theme, agGridTheme];
-    }
-    ''',
-    [Output('config-provider-algorithm-demo', 'algorithm'),
-     Output('sbl-table', 'className', allow_duplicate=True)],
-    Input('theme-switch', 'checked'), 
-    prevent_initial_call=True
-)
+# app.clientside_callback(
+#     '''
+#     function(checked) {
+#         const theme = checked ? 'dark' : 'default';
+#         const agGridTheme = checked ? 'ag-theme-alpine-dark' : 'ag-theme-alpine';
+#         return [theme, agGridTheme];
+#     }
+#     ''',
+#     [Output('config-provider-algorithm-demo', 'algorithm'),
+#      Output('sbl-table', 'className', allow_duplicate=True)],
+#     Input('theme-switch', 'checked'), 
+#     prevent_initial_call=True
+# )
 
 @app.callback(
     Output('drawer-basic', 'visible'),
@@ -138,13 +138,14 @@ def display_page(currentKey):
 # Callback to open the modal
 @app.callback(
     Output('modal-create-sbl', 'visible'),
+    Output({'type': 'create-input', 'key': 'sba-avg'}, 'options'),
     Input('create-sbl', 'nClicks'),
     prevent_initial_call=True
 )
 def open_create_sbl_modal(nClicks):
     if nClicks:
-        return True  # Open modal only when the button is clicked
-    return False  # Ensure it stays closed otherwise
+        return True, ["value5", "value4"]  # Open modal only when the button is clicked
+    return False, ["value1", "value2"] # Ensure it stays closed otherwise
 
 
 # Callback to display images in the modal when an image thumbnail is clicked
