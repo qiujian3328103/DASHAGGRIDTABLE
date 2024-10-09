@@ -86,6 +86,89 @@ dagcomponentfuncs.ImgThumbnail = function (props) {
 };
 
 
+
+// Custom Cell Renderer for displaying color bars based on cell value
+dagcomponentfuncs.ColorBarRenderer = function (props) {
+    const cellValue = props.value;
+
+    // Define a range for the color bar based on a max and min value
+    const colMax = 1;
+    const colMin = -1;
+    const midpoint = 0;  // Set midpoint to zero to differentiate positive and negative
+
+    // Determine color and percentage based on the cell value
+    let color, percentage, leftBarWidth, rightBarWidth;
+    
+    // Calculate the bar widths based on the value
+    if (cellValue >= midpoint) {
+        color = '#3D9970'; // Green for values >= 0
+        percentage = ((cellValue - midpoint) / (colMax - midpoint)) * 100;
+        leftBarWidth = "0%";  // No bar on the left for positive values
+        rightBarWidth = `${percentage}%`;  // Right side bar width
+    } else {
+        color = '#FF4136'; // Red for values < 0
+        percentage = ((cellValue - colMin) / (midpoint - colMin)) * 100;
+        leftBarWidth = `${percentage}%`;  // Left side bar width
+        rightBarWidth = "0%";  // No bar on the right for negative values
+    }
+
+    // Create a container with the left and right bars and a text element to show the value
+    return React.createElement(
+        'div',
+        {
+            style: {
+                width: '100%',
+                height: '100%',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '2px',
+                backgroundColor: '#f4f4f4',  // Light background to highlight the bars
+                border: '1px dotted #000'  // Optional: for visual clarity, similar to Excel
+            },
+        },
+        // Left side of the bar (Red for negative values)
+        React.createElement(
+            'div',
+            {
+                style: {
+                    backgroundColor: cellValue < midpoint ? color : 'transparent',
+                    width: leftBarWidth,
+                    height: '75%',
+                    borderRadius: '2px',
+                },
+            }
+        ),
+        // Right side of the bar (Green for positive values)
+        React.createElement(
+            'div',
+            {
+                style: {
+                    backgroundColor: cellValue >= midpoint ? color : 'transparent',
+                    width: rightBarWidth,
+                    height: '75%',
+                    borderRadius: '2px',
+                },
+            }
+        ),
+        // Text element to display the value outside the bar area
+        React.createElement(
+            'span',
+            {
+                style: {
+                    paddingLeft: '5px',
+                    paddingRight: '5px',
+                    fontWeight: 'bold',
+                    color: '#333',  // Text color
+                    minWidth: '35px',  // Fixed width for alignment
+                    textAlign: 'right',  // Right align the text
+                },
+            },
+            `${cellValue.toFixed(2)}` // Format the value to 2 decimal places
+        )
+    );
+};
+
 // dagcomponentfuncs.CustomLoadingOverlay = function (props) {
 //     return React.createElement(
 //         'div',

@@ -3,9 +3,10 @@ import feffery_antd_components as fac
 from dash import dcc, html
 import dash_ag_grid as dag
 
+# Create the Dash app
 app = dash.Dash(__name__)
 
-# Function to generate the Ag-Grid table with dropdown
+# Function to generate the Ag-Grid table with a color bar renderer
 def caret_ag_grid_table():
     column_defs = [
         {
@@ -24,16 +25,23 @@ def caret_ag_grid_table():
                 ]
             },
         },
-        {"headerName": "Value", "field": "value", "sortable": True},
+        {
+            "headerName": "Value",
+            "field": "value",
+            "sortable": True,
+            "editable": False,
+            # Use custom JavaScript cell renderer defined in dashAgGridComponentFunctions.js
+            "cellRenderer": "ColorBarRenderer",  # Ensure this matches the correct function name
+        },
         {"headerName": "Group", "field": "date", "sortable": True},
     ]
     data = [
-        {"color": "red", "value": 1, "date": "group1"},
-        {"color": "green", "value": 2, "date": "group1"},
-        {"color": "blue", "value": 3, "date": "group1"},
-        {"color": "red", "value": 4, "date": "group2"},
-        {"color": "green", "value": 5, "date": "group2"},
-        {"color": "blue", "value": 6, "date": "group2"},
+        {"color": "red", "value": 0.1, "date": "group1"},
+        {"color": "green", "value": -0.2, "date": "group1"},
+        {"color": "blue", "value": -0.9, "date": "group1"},
+        {"color": "red", "value": 0.6, "date": "group2"},
+        {"color": "green", "value": 0.7, "date": "group2"},
+        {"color": "blue", "value": 0.9, "date": "group2"},
     ]
 
     return dag.AgGrid(
@@ -46,12 +54,15 @@ def caret_ag_grid_table():
             "resizable": True,
             "editable": True,
         },
+        # Specify custom JavaScript components from the dashAgGridComponentFunctions.js
+        dashGridOptions={
+        }
     )
 
 app.layout = fac.AntdLayout(
     [
         fac.AntdHeader(
-            fac.AntdTitle("Color Dropdown with Single Click Edit", level=2, style={"color": "white", "margin": "0"}),
+            fac.AntdTitle("Color Dropdown and Custom JS Color Bar Renderer", level=2, style={"color": "white", "margin": "0"}),
             style={
                 "display": "flex",
                 "justifyContent": "center",
