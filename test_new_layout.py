@@ -8,6 +8,19 @@ app = dash.Dash(__name__)
 
 # Function to generate the Ag-Grid table with a color bar renderer
 def caret_ag_grid_table():
+    data = [
+        {"color": "red", "value": 0.1, "date": "group1"},
+        {"color": "green", "value": -20, "date": "group1"},
+        {"color": "blue", "value": -0.9, "date": "group1"},
+        {"color": "red", "value": 11.2, "date": "group2"},
+        {"color": "green", "value": 0.7, "date": "group2"},
+        {"color": "blue", "value": 0.9, "date": "group2"},
+    ]
+
+    # Calculate max positive and max negative values
+    max_positive = max(d['value'] for d in data if d['value'] > 0)
+    max_negative = abs(min(d['value'] for d in data if d['value'] < 0))
+
     column_defs = [
         {
             "headerName": "Color",
@@ -17,13 +30,6 @@ def caret_ag_grid_table():
             "cellEditor": "agSelectCellEditor",
             "cellEditorParams": {"values": ["red", "green", "blue"]},
             "singleClickEdit": True,  # Enable single-click for dropdown activation
-            "cellStyle": {
-                "styleConditions": [
-                    {"condition": "params.value === 'red'", "style": {"backgroundColor": "red", "color": "white"}},
-                    {"condition": "params.value === 'green'", "style": {"backgroundColor": "green", "color": "white"}},
-                    {"condition": "params.value === 'blue'", "style": {"backgroundColor": "blue", "color": "white"}},
-                ]
-            },
         },
         {
             "headerName": "Value",
@@ -32,16 +38,13 @@ def caret_ag_grid_table():
             "editable": False,
             # Use custom JavaScript cell renderer defined in dashAgGridComponentFunctions.js
             "cellRenderer": "ColorBarRenderer",  # Ensure this matches the correct function name
+            # Pass max and min values as params
+            "cellRendererParams": {
+                "maxPositive": max_positive,
+                "maxNegative": max_negative
+            },
         },
         {"headerName": "Group", "field": "date", "sortable": True},
-    ]
-    data = [
-        {"color": "red", "value": 0.1, "date": "group1"},
-        {"color": "green", "value": -0.2, "date": "group1"},
-        {"color": "blue", "value": -0.9, "date": "group1"},
-        {"color": "red", "value": 0.6, "date": "group2"},
-        {"color": "green", "value": 0.7, "date": "group2"},
-        {"color": "blue", "value": 0.9, "date": "group2"},
     ]
 
     return dag.AgGrid(
@@ -54,15 +57,13 @@ def caret_ag_grid_table():
             "resizable": True,
             "editable": True,
         },
-        # Specify custom JavaScript components from the dashAgGridComponentFunctions.js
-        dashGridOptions={
-        }
+        dashGridOptions={}
     )
 
 app.layout = fac.AntdLayout(
     [
         fac.AntdHeader(
-            fac.AntdTitle("Color Dropdown and Custom JS Color Bar Renderer", level=2, style={"color": "white", "margin": "0"}),
+            fac.AntdTitle("Dynamic Range Color Bar Renderer", level=2, style={"color": "white", "margin": "0"}),
             style={
                 "display": "flex",
                 "justifyContent": "center",

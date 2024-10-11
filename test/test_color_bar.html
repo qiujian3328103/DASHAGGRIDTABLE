@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel-like Color Bars from Center</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+        }
+
+        .bar-wrapper {
+            display: flex;
+            align-items: center;
+            margin: 5px 0;
+            position: relative;
+        }
+
+        .bar-container {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 20px;
+            width: 200px; /* Full bar width */
+            border: 1px solid #ddd;
+            position: relative;
+        }
+
+        .bar {
+            position: absolute;
+            height: 100%;
+            top: 0;
+        }
+
+        .bar-positive {
+            background: linear-gradient(to right, green, lightgreen);
+            left: 50%; /* Start from the center */
+            transform-origin: left; /* Extend to the right */
+        }
+
+        .bar-negative {
+            background: linear-gradient(to left, red, lightcoral);
+            right: 50%; /* Start from the center */
+            transform-origin: right; /* Extend to the left */
+        }
+
+        .bar-value {
+            width: 30px;
+            text-align: right;
+            margin-left: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div id="bar-container">
+    <!-- Dynamic Bars will be injected here -->
+</div>
+
+<script>
+    const data = [0.1, -0.2, -0.9, 0.6, 0.7, 0.9];
+
+    const barContainer = document.getElementById('bar-container');
+
+    data.forEach(value => {
+        // Wrapper for each row
+        const barWrapper = document.createElement('div');
+        barWrapper.classList.add('bar-wrapper');
+
+        // Container for the bar (centered)
+        const barDiv = document.createElement('div');
+        barDiv.classList.add('bar-container');
+
+        // The actual bar
+        const bar = document.createElement('div');
+        bar.classList.add('bar');
+
+        // Calculate the width percentage based on absolute value
+        const barWidth = `${Math.abs(value) * 100}px`;
+
+        if (value >= 0) {
+            bar.classList.add('bar-positive');
+            bar.style.width = barWidth; // Positive values extend right
+        } else {
+            bar.classList.add('bar-negative');
+            bar.style.width = barWidth; // Negative values extend left
+        }
+
+        // Text value display
+        const barValue = document.createElement('span');
+        barValue.classList.add('bar-value');
+        barValue.textContent = value;
+
+        // Construct the bar element
+        barDiv.appendChild(bar);
+        barWrapper.appendChild(barDiv);
+        barWrapper.appendChild(barValue);
+
+        // Append to main container
+        barContainer.appendChild(barWrapper);
+    });
+</script>
+
+</body>
+</html>
