@@ -32,11 +32,11 @@ def create_sbl_page():
         html.Div(
             fac.AntdRow([
                 fac.AntdCol([
-                    fac.AntdSpace([
-                        fac.AntdTag(content="FT", style={"color":"#8039d6"}),
-                        fac.AntdTag(content="EDS", style={"color":"#8039d6"}),
-                        fac.AntdTag(content="EDS logic", style={"color":"#8039d6"}),
-                    ], style={"textAlign": "center"}),
+                    # fac.AntdSpace([
+                    #     fac.AntdTag(content="FT", style={"color":"#8039d6"}),
+                    #     fac.AntdTag(content="EDS", style={"color":"#8039d6"}),
+                    #     fac.AntdTag(content="EDS logic", style={"color":"#8039d6"}),
+                    # ], style={"textAlign": "center"}),
                 ], span=16),
                 fac.AntdCol([
                     fac.AntdButton("Auto Craete SBL", id="auto-create-sbl", className="auto-create-sbl-btn", type="primary"),

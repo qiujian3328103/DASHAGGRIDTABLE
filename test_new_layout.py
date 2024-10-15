@@ -72,6 +72,7 @@ app.layout = fac.AntdLayout(
         ),
         fac.AntdLayout(
             [
+                
                 fac.AntdSider(
                     fac.AntdAccordion(
                         items=[
@@ -83,6 +84,7 @@ app.layout = fac.AntdLayout(
                                     fac.AntdInput(id='root-lot-id', placeholder='Root Lot Id'),
                                     fac.AntdText('Step Seq:'),
                                     fac.AntdSelect(options=['1', '2', '3'], id='step-seq', placeholder='Step Seq'),
+                                    fac.AntdButton('Run Button', variant='solid', style={'width': '100%'}),
                                 ],
                             }
                         ],
@@ -97,12 +99,32 @@ app.layout = fac.AntdLayout(
                     [
                         fac.AntdContent(
                             [
-                                fac.AntdCenter(
+                                caret_ag_grid_table(),
+                                
+                                fac.AntdSpace(
                                     [
-                                        caret_ag_grid_table()
+                                        # fac.AntdCard(
+                                        #     [
+                                        #         fac.AntdCardGrid('内容', style={'width': '50%'}),
+                                        #         fac.AntdCardGrid('内容', style={'width': '50%'}),
+                                        #         fac.AntdCardGrid('内容', style={'width': '50%'}),
+                                        #         fac.AntdCardGrid('内容', style={'width': '50%'}),
+                                        #         fac.AntdCardGrid('内容', style={'width': '50%'}),
+                                        #         fac.AntdCardGrid('内容', style={'width': '50%'}),
+                                        #         fac.AntdCardGrid('内容', style={'width': '50%'}),
+                                                
+                                                
+                                        #     ],
+                                        #     title='调整各类样式以实现紧凑的网格内容区',
+                                        #     bordered=False,
+                                        #     bodyStyle={'padding': '0px 1px 0px 0px', 'border': 0},
+                                        #     headStyle={'border': '1px solid #f0f0f0'},
+                                        #     style={'borderRadius': '8px 8px 0 0', 'width':'100%'},
+                                        # ),
                                     ],
                                     style={
                                         "height": "100%",
+                                        'width': '100%',
                                     },
                                 ),
                             ],
@@ -127,4 +149,4 @@ app.layout = fac.AntdLayout(
 )
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=True, port=8051)

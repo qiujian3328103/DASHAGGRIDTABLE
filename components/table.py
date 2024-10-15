@@ -164,14 +164,14 @@ def create_table(data=None):
             "field": "Map Images",
             "cellRenderer": "ImgThumbnail",
             "initialWidth": 120,
-            "cellStyle": {"padding": "2px"},  # Reduce padding to avoid image too small
+            "cellStyle": {"padding": "2px"}, 
         },
         {
             "headerName": "Trend Images",
             "field": "Trend Images",
             "cellRenderer": "ImgThumbnail",
             "initialWidth": 300,
-            "cellStyle": {"padding": "2px"},  # Reduce padding to avoid image too small
+            "cellStyle": {"padding": "2px"}, 
         },
         {"headerName": "SBA CNT", "field": "SBA CNT", "cellStyle": {"padding": "2px"}},
         {"headerName": "Hit Rate", "field": "Hit Rate", "cellStyle": {"padding": "2px"}},
