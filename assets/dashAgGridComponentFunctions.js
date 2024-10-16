@@ -145,22 +145,6 @@ dagcomponentfuncs.ColorBarRenderer = function (props) {
     );
 };
 
-
-
-// dagcomponentfuncs.CustomLoadingOverlay = function (props) {
-//     return React.createElement(
-//         'div',
-//         {
-//             style: {
-//                 border: '1pt solid grey',
-//                 color: props.color || 'grey',
-//                 padding: 10,
-//             },
-//         },
-//         props.loadingMessage
-//     );
-// };
-
 // Custom cell renderer for displaying logos with a preview feature
 dagcomponentfuncs.LogoRenderer = function (props) {
     // Function to handle the click event for the preview
