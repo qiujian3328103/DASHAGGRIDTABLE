@@ -7,7 +7,7 @@ from components.header import create_header
 from components.footer import create_footer
 from components.sidebar import create_sidebar
 from components.modal import create_new_sbl_record_modal, create_image_display_modal, create_edit_sbl_modal
-from components.customized_image_card import create_customized_image_card, create_image_div
+from components.customized_image_card import create_image_div
 from pages.summary import create_summary_page
 from pages.setting import create_settings_page
 from pages.sbl_table import create_sbl_page
@@ -158,6 +158,7 @@ def open_create_sbl_modal(nClicks):
 def show_image_modal(data):
     if not data:
         raise PreventUpdate
+    print(data)
     # Check if the data exists and if it was triggered by the correct columns
     if isinstance(data, dict) and data.get("value") and data.get("colId") in ["Map Images", "Trend Images"]:
             images = data['value']
@@ -191,6 +192,7 @@ def show_image_modal(data):
 )
 def handle_edit_button_click(cell_renderer_data):
     if cell_renderer_data:
+        
         if isinstance(cell_renderer_data.get('value', {}), list):
             # if the cell_renderer_data is a list, it means the data is from the image columns
             # so we need to prevent the update  

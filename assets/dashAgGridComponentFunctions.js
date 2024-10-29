@@ -231,5 +231,28 @@ dagcomponentfuncs.LogoRenderer = function (props) {
     return container;
 };
 
+dagcomponentfuncs.CommentRenderer = function (props) {
+    const { setData, data } = props;
+
+    function onClick() {
+        setData({ action: 'comment', rowId: data.Id });
+    }
+
+    return React.createElement(
+        'span',
+        {
+            onClick: onClick,
+            // style: {
+            //     cursor: 'pointer',
+            //     color: '#007bff',
+            //     textDecoration: 'underline',
+            //     display: 'inline-block',
+            //     padding: '4px',
+            // },
+        },
+        props.value || 'View Comment'
+    );
+};
+
 
 

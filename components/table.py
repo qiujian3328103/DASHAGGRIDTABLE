@@ -179,7 +179,7 @@ def create_table(data=None):
         {"headerName": "SBA Limit", "field": "SBA Limit", "cellStyle": {"padding": "2px"}},
         {"headerName": "PGM/Process", "field": "PGM/Process", "cellStyle": {"padding": "2px"}},
         {"headerName": "Comment", "field": "Comment", "cellStyle": {"padding": "2px"}},
-        {"headerName": "Action Item", "field": "Action Item", "cellStyle": {"padding": "2px"}},
+        {"headerName": "Action Item", "field": "Action Item", "cellStyle": {"padding": "2px"}, "cellRenderer": "CommentRenderer",},
         {"headerName": "Assigned Team", "field": "Assigned Team", "cellStyle": {"padding": "2px"}},
         {"headerName": "Action Owner", "field": "Action Owner", "cellStyle": {"padding": "2px"}},
         {"headerName": "PE Owner", "field": "PE Owner", "cellStyle": {"padding": "2px"}},
