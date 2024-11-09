@@ -61,9 +61,8 @@ dagcomponentfuncs.ImgThumbnail = function (props) {
     const { setData, data } = props;
 
     function onClick() {
-        setData(props.value);
+        setData({ action: 'image', rowId: data.Id });
     }
-
     return React.createElement(
         'div',
         {
@@ -242,17 +241,9 @@ dagcomponentfuncs.CommentRenderer = function (props) {
         'span',
         {
             onClick: onClick,
-            // style: {
-            //     cursor: 'pointer',
-            //     color: '#007bff',
-            //     textDecoration: 'underline',
-            //     display: 'inline-block',
-            //     padding: '4px',
-            // },
+            style: { cursor: 'pointer', color: '#007bff', textDecoration: 'underline' }
         },
-        props.value || 'View Comment'
+        props.value || 'None'  // Display a placeholder if the comment is None
     );
 };
-
-
 

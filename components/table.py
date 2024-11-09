@@ -178,8 +178,8 @@ def create_table(data=None):
         {"headerName": "SBA Avg", "field": "SBA Avg", "cellStyle": {"padding": "2px"}},
         {"headerName": "SBA Limit", "field": "SBA Limit", "cellStyle": {"padding": "2px"}},
         {"headerName": "PGM/Process", "field": "PGM/Process", "cellStyle": {"padding": "2px"}},
-        {"headerName": "Comment", "field": "Comment", "cellStyle": {"padding": "2px"}},
-        {"headerName": "Action Item", "field": "Action Item", "cellStyle": {"padding": "2px"}, "cellRenderer": "CommentRenderer",},
+        {"headerName": "Comment", "field": "Comment", "cellStyle": {"padding": "2px"}, "cellRenderer": "CommentRenderer",},
+        {"headerName": "Action Item", "field": "Action Item", "cellStyle": {"padding": "2px"}},
         {"headerName": "Assigned Team", "field": "Assigned Team", "cellStyle": {"padding": "2px"}},
         {"headerName": "Action Owner", "field": "Action Owner", "cellStyle": {"padding": "2px"}},
         {"headerName": "PE Owner", "field": "PE Owner", "cellStyle": {"padding": "2px"}},
@@ -211,5 +211,5 @@ def create_table(data=None):
                         "loadingMessage": "One moment please...",
                         "color": "red",
                         },},
-        style={'height': '650px', 'width': '100%'}
+        style={'height': '650px', 'width': '100%'},
     )

@@ -52,8 +52,8 @@ cursor.execute('''
 
 # Sample data to insert into sbl_table
 data = [
-    ('2024-06-21', '2024-08-23', 'Product1', 5999, 27, 7.52, 0.46, 0.15, 'Open', 'Process', 'some comments', 'Needs actions', 'A', 'A', 'A', 'www.google.com', 'Open', 'some follow up', '2/1/2024'),
-    ('2024-06-22', '2024-08-23', 'Product1', 1837, 31, 8.52, 0.52, 0.12, 'KIV', 'PGM', 'some comments', 'Needs actions', 'B', 'B', 'B', 'www.google.com', 'Closed', 'some follow up', '2/2/2024'),
+    ('2024-06-21', '2024-08-23', 'Product1', 5999, 27, 7.52, 0.46, 0.15, 'Open', 'Process', None, None, 'A', 'A', 'A', 'www.google.com', 'Open', 'some follow up', '2/1/2024'),
+    ('2024-06-22', '2024-08-23', 'Product1', 1837, 31, 8.52, 0.52, 0.12, 'KIV', 'PGM', None, 'Needs actions', 'B', 'B', 'B', 'www.google.com', 'Closed', 'some follow up', '2/2/2024'),
     ('2024-07-23', '2024-08-24', 'Product1', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
     ('2024-07-24', '2024-08-25', 'Product1', 4507, 51, 9.52, 0.46, 0.10, 'New', 'PGM', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
     ('2024-07-25', '2024-08-26', 'Product1', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
@@ -75,7 +75,7 @@ data = [
     ('2024-08-28', '2024-08-30', 'Product3', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
     ('2024-08-29', '2024-08-31', 'Hamilton', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'write comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
     ('2024-08-30', '2024-09-01', 'Product3', 4507, 51, 9.52, 0.46, 0.10, 'New', 'PGM', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024'),
-    ('2024-08-31', '2024-09-22', 'Hamilton', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', 'some comments', 'Needs actions', 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024')
+    ('2024-08-31', '2024-09-22', 'Hamilton', 4507, 51, 9.52, 0.46, 0.10, 'New', 'Process', None, None, 'C', 'C', 'C', 'www.google.com', 'Open', 'some follow up', '2/3/2024')
 ]
 
 # Insert the data into the sbl_table with a generated UUID for the foreigner_key
@@ -90,10 +90,12 @@ for row in data:
 
 # Sample image data to insert into map_image and trend_image tables
 # You would normally read an image from a file in binary mode (rb) using open()
-with open(r'C:\Users\Jian Qiu\Dropbox\pythonprojects\DashAggridTable\test\Capture.JPG', 'rb') as file:
+# with open(r'C:\Users\Jian Qiu\Dropbox\pythonprojects\DashAggridTable\test\Capture.JPG', 'rb') as file:
+with open(r'/Users/JianQiu/Dropbox/pythonprojects/DashAggridTable/test/map_image.JPG', 'rb') as file:
     image_data_map = file.read()
 
-with open(r'C:\Users\Jian Qiu\Dropbox\pythonprojects\DashAggridTable\test\trend_image.JPG', 'rb') as file:
+# with open(r'C:\Users\Jian Qiu\Dropbox\pythonprojects\DashAggridTable\test\trend_image.JPG', 'rb') as file:
+with open(r'/Users/JianQiu/Dropbox/pythonprojects/DashAggridTable/test/Capture.JPG', 'rb') as file:
     image_data_trend = file.read()
 
 

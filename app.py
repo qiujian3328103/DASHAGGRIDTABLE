@@ -1,5 +1,5 @@
 import dash 
-from dash import dcc, html, Dash, clientside_callback, callback_context, DiskcacheManager, CeleryManager
+from dash import dcc, html, Dash, clientside_callback, callback_context, DiskcacheManager, CeleryManager, no_update
 from dash.exceptions import PreventUpdate
 import feffery_antd_components as fac
 from dash.dependencies import Input, Output, State
@@ -97,19 +97,43 @@ app.layout = fac.AntdConfigProvider(
     )
 
 # change the theme of the app
-# app.clientside_callback(
-#     '''
-#     function(checked) {
-#         const theme = checked ? 'dark' : 'default';
-#         const agGridTheme = checked ? 'ag-theme-alpine-dark' : 'ag-theme-alpine';
-#         return [theme, agGridTheme];
-#     }
-#     ''',
-#     [Output('config-provider-algorithm-demo', 'algorithm'),
-#      Output('sbl-table', 'className', allow_duplicate=True)],
-#     Input('theme-switch', 'checked'), 
-#     prevent_initial_call=True
-# )
+app.clientside_callback(
+    '''
+    function(checked) {
+    const theme = checked ? 'dark' : 'default';
+    const agGridTheme = checked ? 'ag-theme-alpine-dark' : 'ag-theme-alpine';
+    const plotlyTheme = checked ? 'plotly_dark' : 'plotly';
+
+    // Update Ag-Grid theme if the sbl-table exists
+    const sblTable = document.getElementById('sbl-table');
+    if (sblTable) {
+        sblTable.className = agGridTheme;
+    }
+
+    // Update Plotly graph theme if the graph-card exists
+    const graphCard = document.getElementById('graph-card');
+    if (graphCard) {
+        const graph = document.getElementById('graph-figure');
+        if (graph) {
+            const plotData = graph.data;
+            const layout = {
+                ...graph.layout,
+                template: plotlyTheme,
+                plot_bgcolor: "rgba(0, 0, 0, 0)",
+                paper_bgcolor: "rgba(0, 0, 0, 0)",
+                font: { color: checked ? "#FFF" : "#000" },
+            };
+            Plotly.react(graph, plotData, layout);
+        }
+    }
+
+        return [theme];
+    }
+    ''',
+    [Output('config-provider-algorithm-demo', 'algorithm')],
+    Input('theme-switch', 'checked'),
+    prevent_initial_call=True
+)
 
 @app.callback(
     Output('drawer-basic', 'visible'),
@@ -152,27 +176,32 @@ def open_create_sbl_modal(nClicks):
 @app.callback(
     Output("image-modal", "visible"),
     Output("modal-image-container", "children"),
-    Input("sbl-table", "cellRendererData"),
+    Input("sbl-table", "cellClicked"),
+    State("sbl-table", "cellRendererData"),
     prevent_initial_call=True
 )
-def show_image_modal(data):
+def show_image_modal(data, cellRendererData):
+    # print(data)
     if not data:
         raise PreventUpdate
-    print(data)
     # Check if the data exists and if it was triggered by the correct columns
     if isinstance(data, dict) and data.get("value") and data.get("colId") in ["Map Images", "Trend Images"]:
-            images = data['value']
-            image_components = [
-                fac.AntdImage(
-                    src=f"data:image/jpeg;base64,{img}",
-                    height=200,
-                    preview=True,
-                    locale="en-us",
-                ) for img in images
-            ]
-            return True, image_components
-
-    raise PreventUpdate
+        print("clikced image cell")
+        print(cellRendererData)
+        images = data['value']
+        image_components = [
+            fac.AntdImage(
+                src=f"data:image/jpeg;base64,{img}",
+                height=200,
+                preview=True,
+                locale="en-us",
+            ) for img in images
+        ]
+        return True, image_components
+    else:
+        print("render data")
+        print(cellRendererData)
+        return False, no_update
 
 
 # handle edit button click in ag-grid to display current row data in modal
@@ -192,7 +221,6 @@ def show_image_modal(data):
 )
 def handle_edit_button_click(cell_renderer_data):
     if cell_renderer_data:
-        
         if isinstance(cell_renderer_data.get('value', {}), list):
             # if the cell_renderer_data is a list, it means the data is from the image columns
             # so we need to prevent the update  
