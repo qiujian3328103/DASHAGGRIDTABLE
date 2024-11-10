@@ -1,6 +1,28 @@
 import pandas as pd 
 # from config import TEST_WAFER_MAP_SAMPLE_DATA
 
+def create_wafer_data_for_plotly(root_lot_id):
+    """similar to create_wafer_data, but more suitable for plotly plot data strcuture
+
+    Args:
+        root_lot_id (_type_): _description_
+    """
+    TEST_WAFER_MAP_SAMPLE_DATA = r'/Users/JianQiu/Dropbox/pythonprojects/DashAggridTable/test/sample_wafermap_data.csv'
+    df_raw = pd.read_csv(TEST_WAFER_MAP_SAMPLE_DATA, index_col=False)
+    
+    # filter out rows based on "sort_test_flag"
+    df = df_raw[df_raw["sort_test_flag"] == "T"]
+    width = 7270.96*0.001
+    height = 6559.46*0.001
+    
+    df['x0'] = df['ucs_die_origin_x']*0.001 - width/2
+    df['x1'] = df['ucs_die_origin_x']*0.001 + width/2
+    df['y0'] = df['ucs_die_origin_y'] *0.001 - height/2
+    df['y1'] = df['ucs_die_origin_y']*0.001 + height/2
+    
+    df["color"] = "green"
+    
+    return df[['x0', 'x1', 'y0', 'y1', 'color', 'bin_value', 'sort_die_x', 'sort_die_y']]
 
 def create_wafer_data(root_lot_id):
     print('pass')

@@ -11,6 +11,7 @@ from components.customized_image_card import create_image_div
 from pages.summary import create_summary_page
 from pages.setting import create_settings_page
 from pages.sbl_table import create_sbl_page
+from pages.wafermap_page import create_wafermap_page
 from utilities.data_process import query_row_by_id
 # from test.test_file_b64 import b64data
 from flask_caching import Cache
@@ -66,6 +67,7 @@ app.layout = fac.AntdConfigProvider(
     algorithm='default',
     children=[
                 html.Div([
+                    dcc.Location(id='url', refresh=False),
                     # Store for tracking all pasted map images and their data
                     dcc.Store(id='map-image-store', data=[]),
                     fac.Fragment(id='fragment-demo'),
@@ -140,23 +142,29 @@ app.clientside_callback(
     Input('download-sba', 'nClicks'),
     prevent_initial_call=True,
 )
-def drawer_basic_demo(nCLicks):
-    if nCLicks:
+def drawer_basic_demo(nClicks):
+    if nClicks:
         return True
     return False
 
 # Define the callback to update page content based on URL
 @app.callback(
     Output('page-content', 'children'),
-    Input('menu', 'currentKey')
+    Output('menu', 'currentKey'),
+    Input('url', 'pathname')
+    # Input('menu', 'currentKey')
 )
-def display_page(currentKey):
-    if currentKey == 'Summary':
-        return create_summary_page(get_cached_data)  # Render the summary page
-    elif currentKey == 'Setting':
-        return create_settings_page()  # Render the settings page
+def display_page(pathname):
+    if pathname == '/Summary':
+        return create_summary_page(get_cached_data), '/Summary'  # Render the summary page
+    elif pathname == '/Setting':
+        return create_settings_page(), '/Setting'  # Render the settings page
+    elif pathname == '/Home':
+        return create_sbl_page(), '/Home'
+    elif pathname == '/WaferMap':
+        return create_wafermap_page(), '/WaferMap'
     else:
-        return create_sbl_page()  # Default to home page (your main table)
+        return create_sbl_page(), None # Default to home page (your main table)
 
 
 # Callback to open the modal
