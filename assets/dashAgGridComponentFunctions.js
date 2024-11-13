@@ -248,13 +248,16 @@ dagcomponentfuncs.CommentRenderer = function (props) {
 };
 
 dagcomponentfuncs.StockLink = function (props) {
+    const companyName = props.value; // Display the company name
+    const stockTicker = props.data.ticker; // Use the ticker symbol for the link
+
     return React.createElement(
         'a',
         {
-            href: '/quote/' + props.value,
-            target: '_blank', // This attribute opens the link in a new tab
-            rel: 'noopener noreferrer', // Adds security to prevent the new tab from controlling the original page
+            href: 'https://finance.yahoo.com/quote/' + stockTicker,
+            target: '_blank', // Open link in a new tab
+            rel: 'noopener noreferrer', // Security improvement
         },
-        props.value
+        companyName // Displayed text
     );
 };

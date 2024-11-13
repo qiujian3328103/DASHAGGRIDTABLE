@@ -12,8 +12,8 @@ df = pd.DataFrame(data)
 columnDefs = [
     {
         "headerName": "Stock Ticker",
-        "field": "ticker",
-        # stockLink function is defined in the dashAgGridComponentFunctions.js in assets folder
+        "field": "company",
+        # Custom cellRenderer function to display company name but use ticker for the link
         "cellRenderer": "StockLink",
     },
     {
@@ -27,18 +27,16 @@ columnDefs = [
     },
 ]
 
-
 grid = dag.AgGrid(
     id="simple-column-example-1",
     columnDefs=columnDefs,
     rowData=df.to_dict("records"),
-    columnSize="sizeToFit"
+    columnSize="sizeToFit",
 )
-
 
 app = Dash(__name__)
 
-app.layout = html.Div([dcc.Markdown("Adding links with cellRenderer"), grid])
+app.layout = html.Div([dcc.Markdown("Display Company Name, Link to Ticker"), grid])
 
 if __name__ == "__main__":
     app.run(debug=True)
