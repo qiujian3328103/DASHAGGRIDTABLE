@@ -247,3 +247,14 @@ dagcomponentfuncs.CommentRenderer = function (props) {
     );
 };
 
+dagcomponentfuncs.StockLink = function (props) {
+    return React.createElement(
+        'a',
+        {
+            href: '/quote/' + props.value,
+            target: '_blank', // This attribute opens the link in a new tab
+            rel: 'noopener noreferrer', // Adds security to prevent the new tab from controlling the original page
+        },
+        props.value
+    );
+};

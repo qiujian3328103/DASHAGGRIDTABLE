@@ -1,10 +1,11 @@
 from components.table import create_table, query_data_by_date_range
-from dash import html, callback, Output, Input, State
+from dash import html, callback, Output, Input, State, clientside_callback
 from dash.exceptions import PreventUpdate
 import feffery_antd_components as fac
 import feffery_utils_components as fuc 
 import datetime 
 import numpy as np
+import json 
 # from utilities.data_process import query_row_by_id
 # from components.modal import create_edit_sbl_modal
 from utilities.wafer_map import create_wafer_data, create_wafer_data_for_plotly
@@ -172,20 +173,36 @@ def create_wafermap_page():
     wafer_data = create_wafer_data_for_plotly(root_lot_id='AAAAA')
     # print(wafer_data)
     # print(wafer_data)
+    wafer_data, shot_data, width, height = create_wafer_data(root_lot_id='AAAAA')
     
+    # Prepare the data for JavaScript
+    wafer_map_data = {
+        "wafer_data": wafer_data,
+        "width": width,
+        "height": height
+    }
+
+    # Store the wafer map data in dcc.Store
+    # store_data = dcc.Store(id='wafer-data-store', data=json.dumps(wafer_map_data))
+
     wafer_maps_cards = []
-    for i in range(1,26):
+    for i in range(1,2):
         wafer_maps_cards.append(
             fac.AntdCardGrid([
                 fac.AntdSpace([
                     fac.AntdText(f'Wafer {i}', style={'fontSize': '10px', "width": "280px", "textAlign": "center", "height":"10px"}),
-                    dcc.Graph(
-                        id={'type': 'wafermap', 'index': i},
-                        # figure=generate_plotly_wafermap(wafer_data=wafer_data),
-                        figure=generate_plotly_heatmap(df=wafer_data),
-                        config={'displaylogo': False, 'scrollZoom': False},
-                        style={'width': '280px', 'height': '280px'}
-                    ),
+                    html.Div(
+                        children=[],
+                        id='wafer-map-{i}',
+                        style={'height': '280px', 'width': '280px'},
+                    )
+                    # dcc.Graph(
+                    #     id={'type': 'wafermap', 'index': i},
+                    #     # figure=generate_plotly_wafermap(wafer_data=wafer_data),
+                    #     figure=generate_plotly_heatmap(df=wafer_data),
+                    #     config={'displaylogo': False, 'scrollZoom': False},
+                    #     style={'width': '280px', 'height': '280px'}
+                    # ),
                     # fac.AntdSpace([
                     #     fac.AntdProgress(percent=80, steps=10, size='small'),
                     #     fac.AntdProgress(percent=72, steps=10, size='small'),
@@ -231,3 +248,12 @@ def create_wafermap_page():
     ])
     
 
+clientside_callback(
+    """
+    function(waferData) {
+        console.log(waferData);
+    }
+    """,
+    Output('wafer-data-store', 'data'),
+    Input('wafer-data-store', 'data')
+)
